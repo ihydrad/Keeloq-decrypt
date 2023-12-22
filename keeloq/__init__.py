@@ -50,5 +50,5 @@ class KeeloqFormat:
 
 class Keeloq(KeeloqFormat, KeeloqCrypt):
 
-    def decrypt(self, mail):      
+    def decrypt(self, mail):
         return KeeloqCrypt.decrypt(self, self.get_hop(mail))
