@@ -4,6 +4,7 @@ def bit(data, bitnum):
 
 class KeeloqCrypt:
 
+    iterations = 528
     KeeLoqNLF = 0x3A5C742E
 
     def __init__(self, key: int, *args, **kwargs):
@@ -14,15 +15,14 @@ class KeeloqCrypt:
     def g5(x, a, b, c, d, e):
         return (bit(x, a) + bit(x, b)*2 + bit(x, c)*4 + bit(x, d)*8 + bit(x, e)*16)
 
-    def decrypt(self, x: int):
-        for r in range(528):
-            x = ((x<<1)&0xFFFFFFFF)^(bit(x, 31) ^ bit(x, 15) ^ bit(self.key, (15-r)&63)^bit(self.KeeLoqNLF, self.g5(x, 0, 8, 19, 25, 30)))
+    def decrypt(self, x: int) -> int:
+        for r in range(self.iterations):
+            x = ((x<<1)&0xFFFFFFFF)^(bit(x, 31)^bit(x, 15)^bit(self.key, (15-r)&63)^bit(self.KeeLoqNLF, self.g5(x, 0, 8, 19, 25, 30)))
         return x
 
-    def encrypt(self, x: int):
-        """Keeloq Encrypt funcion. Put data for encrypt here."""     
-        for r in range(528):
-            x = ((x>>1)&0xFFFFFFFF)^((bit(x, 0) ^ bit(x, 16) ^ bit(self.key, r&63)^bit(self.KeeLoqNLF, self.g5(x, 1, 9, 20, 26, 31))) << 31)            
+    def encrypt(self, x: int) -> int: 
+        for r in range(self.iterations):
+            x = ((x>>1)&0xFFFFFFFF)^((bit(x, 0)^bit(x, 16)^bit(self.key, r&63)^bit(self.KeeLoqNLF, self.g5(x, 1, 9, 20, 26, 31))) << 31)            
         return x  
 
     def __repr__(self):
