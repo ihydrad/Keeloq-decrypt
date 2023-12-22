@@ -7,8 +7,7 @@ data = 0xE381BD59
 pager = Keeloq(key)
 button = pager.get_button_code(mail)
 serial = pager.get_serial(mail)
-hop = pager.encript(data)
-mail = pager.build_mail(button, serial, hop)
-dec = pager.decrypt(mail)
+
+mail = pager.build_mail(button, serial, pager.encript(data))
 print("mail:", hex(mail))
-print("Decrypted: " + hex(dec))
+print("Decrypted: " + hex(pager.decrypt(mail)))
