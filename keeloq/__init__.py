@@ -41,7 +41,7 @@ class KeeloqFormat:
 
     @staticmethod
     def get_button_code(mail):
-        return (mail >> 32) >> 28
+        return mail >> 60
 
     @staticmethod
     def get_serial(mail):
